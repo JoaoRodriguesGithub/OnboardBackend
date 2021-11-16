@@ -1,0 +1,36 @@
+{
+  "name": "onboardbackend",
+  "version": "1.0.0",
+  "description": "Backend code for Onboard  web application that will be developed on Collaborative Software Development class.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest",
+    "lint": "eslint src/** test/** --fix",
+    "secure-mode": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoaoRodriguesIPCA/OnboardBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoaoRodriguesIPCA/OnboardBackend/issues"
+  },
+  "homepage": "https://github.com/JoaoRodriguesIPCA/OnboardBackend#readme",
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "jest": "^23.6.0",
+    "supertest": "3.3.0"
+  },
+  "dependencies": {
+    "express": "4.16.4"
+  }
+}
