@@ -24,4 +24,3 @@ test.skip('Test #7 - Access transaction from another user', () => {});
 
 test.skip('Test #8 - Transaction ammount must be positive', () => {});
 
-test.skip('Test #9 - Validation of creating an transaction', () => {});
