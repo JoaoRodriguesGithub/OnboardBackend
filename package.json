@@ -10,7 +10,7 @@
     "start": "node src/server.js",
     "test": "jest",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watch"
+    "secure-mode": "jest --watchAll --verbose=false"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,10 @@
     "supertest": "3.3.0"
   },
   "dependencies": {
-    "express": "4.16.4"
+    "body-parser": "1.18.3",
+    "consign": "0.1.6",
+    "express": "4.16.4",
+    "knex": "0.15.2",
+    "pg": "^8.7.1"
   }
 }
