@@ -140,4 +140,12 @@ test.skip('Test #11 - Delete user', () => {
     });
 });
 
-test.skip('Test #12 - Restrict deletion of another user', () => { });
+test.skip('Test #11 - Restrict the access from another user', () => { });
+
+test.skip('Test #12 - Restrict edition of another user', () => { });
+
+test.skip('Test #13 - Restrict deletion of another user', () => { });
+
+test.skip('Test #14 - Insert an user with the right role permitions', () => { });
+
+test.skip('Test #15 - Restrict permitions for roles', () => { });

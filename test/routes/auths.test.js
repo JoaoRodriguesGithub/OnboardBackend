@@ -10,6 +10,4 @@ test.skip('Test #3 - Wrong authentication attempt with wrong user', () => { });
 
 test.skip('Test #4 - Access to protected routes', () => { });
 
-test.skip('Test #5 - Create account', () => { });
-
-test.skip('Test #6 - Create user', () => { });
+test.skip('Test #5 - Create user', () => { });
