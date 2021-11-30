@@ -25,4 +25,3 @@ test.skip('Test #10 - Restrict the access from another user', () => { });
 test.skip('Test #11 - Restrict edition of another user', () => { });
 
 test.skip('Test #12 - Restrict deletion of another user', () => { });
-
