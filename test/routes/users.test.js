@@ -177,11 +177,11 @@ test.skip('Test #14 - Restrict deletion of another user', () => {
 });
 
 test.skip('Test #15 - Insert an user with the right role_id permitions', () => {
-  request(app).get(MAIN_ROUTE)
+  request(app).post(MAIN_ROUTE)
     .insert({ name: 'Jorge Rodrigues #Role 1', role_id: '1' })
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(res.body[0].role_id).toBe('1');
     });
 });
