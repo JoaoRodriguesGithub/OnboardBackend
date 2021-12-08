@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const app = require('../../src/app');
 
-test.skip('Test #1 - Create user with signup', () => {
+test('Test #1 - Create user with signup', () => {
   const email = `${Date.now()}@onboard.com`;
   return request(app).post('/auth/signup')
     .send({
