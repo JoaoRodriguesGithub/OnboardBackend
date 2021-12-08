@@ -14,9 +14,19 @@ module.exports = (app) => {
     return bcrypt.hashSync(password, salt);
   };
 
+  const validate = (user) => {
+    if (!user.company_id) throw new ValidationError('Company is a mandatory attribute');
+    if (!user.name) throw new ValidationError('Name is a mandatory attribute');
+    if (!user.email) throw new ValidationError('Email is a mandatory attribute');
+    if (!user.password) throw new ValidationError('Password is a mandatory attribute');
+    if (!user.role_id) throw new ValidationError('Role is a mandatory attribute');
+  };
+
   const save = async (user) => {
+    validate(user);
+
     const userDb = await findOne({ email: user.email });
-    if (userDb) throw new ValidationError('There is an user with that email');
+    if (userDb) throw new ValidationError('Email duplicated on BD');
 
     const newUser = { ...user };
     newUser.password = getPasswdHash(user.password);
