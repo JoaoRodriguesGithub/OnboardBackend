@@ -5,7 +5,6 @@ module.exports = (app) => {
   const protectedRouter = express.Router();
 
   protectedRouter.use('/users', app.routes.users);
-  protectedRouter.use('/transactions', app.routes.transactions);
 
   app.use('/v1', app.config.passport.authenticate(), protectedRouter);
 };

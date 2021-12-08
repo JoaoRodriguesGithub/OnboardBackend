@@ -1,13 +1,22 @@
 const request = require('supertest');
-
+const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/users';
+const email = `${Date.now()}@tester.com`;
 
 let user;
 let user2;
 
-test.skip('Test #1 - List all users', () => {
+beforeAll(async () => {
+  const res = await app.services.user.save({
+    company_id: '1', name: 'User Account tester', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
+  });
+  user = { ...res[0] };
+  user.token = jwt.encode(user, 'onBoardIsCool!');
+});
+
+test('Test #1 - List all users', () => {
   return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
@@ -16,10 +25,10 @@ test.skip('Test #1 - List all users', () => {
     });
 });
 
-test.skip('Test #2 - Insert users', () => {
+test('Test #2 - Insert users', () => {
   return request(app).post(MAIN_ROUTE)
     .send({
-      company_id: '1', name: 'João Rodrigues', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
     })
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
