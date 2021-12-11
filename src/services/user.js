@@ -5,6 +5,7 @@ module.exports = (app) => {
   const findAll = () => {
     return app.db('users').select(['id', 'company_id', 'name', 'email', 'role_id']);
   };
+
   const findOne = (filter = {}) => {
     return app.db('users').where(filter).first();
   };
@@ -33,5 +34,19 @@ module.exports = (app) => {
     return app.db('users').insert(newUser, ['id', 'company_id', 'name', 'email', 'role_id']);
   };
 
-  return { findAll, save, findOne };
+  const update = (id, user) => {
+    return app.db('users')
+      .where({ id })
+      .update(user, '*');
+  };
+
+  const remove = async (id) => {
+    return app.db('users')
+      .where({ id })
+      .del();
+  };
+
+  return {
+    findAll, save, findOne, update, remove,
+  };
 };
