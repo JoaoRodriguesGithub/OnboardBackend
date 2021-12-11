@@ -14,6 +14,11 @@ beforeAll(async () => {
   });
   user = { ...res[0] };
   user.token = jwt.encode(user, 'onBoardIsCool!');
+  const res2 = await app.services.user.save({
+    company_id: '1', name: 'User Account tester2', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
+  });
+  user2 = { ...res2[0] };
+  user2.token = jwt.encode(user, 'onBoardIsCool!');
 });
 
 test('Test #1 - List all users', () => {
@@ -84,41 +89,45 @@ test('Test #5 - Insert duplicated users', () => {
     });
 });
 
-test.skip('Test #6 - Update user', () => {
+test('Test #6 - Update user', () => {
+  const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      company_id: '1', name: 'João Rodrigues - Update', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues - Update', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
     }, ['id'])
     .then((usr) => request(app).put(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`)
       .send({ name: 'User updated' }))
     .then((res) => {
       expect(res.status).toBe(200);
+      expect(res.body.name).toBe('User updated');
     });
 });
 
-test.skip('Test #7 - Delete user', () => {
+test('Test #7 - Delete user', () => {
+  const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      company_id: '1', name: 'João Rodrigues - Remove', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues - Remove', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
     }, ['id'])
     .then((usr) => request(app).delete(`${MAIN_ROUTE}/${usr[0].id}`)
-      .set('authorization', `bearer ${user.token}`)
-      .send({ name: 'user updated' }))
+      .set('authorization', `bearer ${user.token}`))
     .then((res) => {
       expect(res.status).toBe(204);
     });
 });
 
+// TODO Aqui devemos esperar uma resposta 401 ou 403?
 test.skip('Test #8 - Restrict the access from another user', () => {
+  const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      id: user2.id, company_id: '1', name: 'Tiago Rodrigues - #User2', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
     }, ['id'])
     .then((usr) => request(app).get(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`))
     .then((res) => {
-      expect(res.status).toBe(403);
+      expect(res.status).toBe(401);
       expect(res.body.error).toBe('Does not have access to the requested resource');
     });
 });
