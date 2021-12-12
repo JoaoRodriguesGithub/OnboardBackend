@@ -1,26 +1,25 @@
 const request = require('supertest');
-
+const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/transactions';
-let user;
-let user2;
+const secret = 'onBoardIsCool!';
+const user = { id: 10000, name: 'admin1', email: 'abc@onboard.com' };
+const user2 = { id: 10002, name: 'admin1', email: 'axpto@xpto.com' };
+const TOKEN = jwt.encode(user, secret);
 
-test.skip('Test #1 - List only user transactions', () => {
-  return app.db('transactions').insert([
-    {
-      user_id: user.id, date: new Date(), category_id: '1', amount: 60,
-    },
-    {
-      user_id: user2.id, date: new Date(), category_id: '3', amount: 200,
-    },
-  ]).then(() => request(app).get(MAIN_ROUTE)
-    .set('authorization', `bearer ${user.token}`)
+beforeAll(async () => {
+  await app.db.seed.run();
+});
+
+test('Test #1 - List only user transactions', () => {
+  return request(app).get(MAIN_ROUTE)
+    .set('authorization', `bearer ${TOKEN}`)
     .then((res) => {
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].amount).toBe('60.00');
-    }));
+      expect(res.body).toHaveLength(2);
+      expect(res.body[0].amount).toBe('6.00');
+    });
 });
 
 test.skip('Test #2 - Insert user transactions', () => {
