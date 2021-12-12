@@ -80,7 +80,7 @@ test('Test #4 - Save encryped password', async () => {
 test('Test #5 - Insert duplicated users', () => {
   return request(app).post(MAIN_ROUTE)
     .send({
-      company_id: '1', name: 'João Rodrigues', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
+      company_id: '1', name: 'João Rodrigues', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     })
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
