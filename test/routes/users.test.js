@@ -10,12 +10,12 @@ let user2;
 
 beforeAll(async () => {
   const res = await app.services.user.save({
-    company_id: '1', name: 'User Account tester', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
+    company_id: '1', name: 'User Account tester', email: `${Date.now()}@tester.com`, password: '123456', role_id: '2',
   });
   user = { ...res[0] };
   user.token = jwt.encode(user, 'onBoardIsCool!');
   const res2 = await app.services.user.save({
-    company_id: '1', name: 'User Account tester2', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
+    company_id: '1', name: 'User Account tester2', email: `${Date.now()}@tester.com`, password: '123456', role_id: '2',
   });
   user2 = { ...res2[0] };
   user2.token = jwt.encode(user, 'onBoardIsCool!');
@@ -33,7 +33,7 @@ test('Test #1 - List all users', () => {
 test('Test #2 - Insert users', () => {
   return request(app).post(MAIN_ROUTE)
     .send({
-      company_id: '1', name: 'João Rodrigues', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     })
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
@@ -47,7 +47,7 @@ describe(' Test #3 - Insert user without attributes...', () => {
   const testTemplate = (newData, errorMessage) => {
     return request(app).post(MAIN_ROUTE)
       .send({
-        company_id: 1, name: 'João Rodrigues # Inserts', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1', ...newData,
+        company_id: 1, name: 'João Rodrigues # Inserts', email, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2', ...newData,
       })
       .set('authorization', `bearer ${user.token}`)
       .then((res) => {
@@ -66,7 +66,7 @@ describe(' Test #3 - Insert user without attributes...', () => {
 test('Test #4 - Save encryped password', async () => {
   const res = await request(app).post(MAIN_ROUTE)
     .send({
-      company_id: '1', name: 'João Rodrigues #encrypted pwd', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
+      company_id: '1', name: 'João Rodrigues #encrypted pwd', email: `${Date.now()}@tester.com`, password: '123456', role_id: '2',
     })
     .set('authorization', `bearer ${user.token}`);
   expect(res.status).toBe(201);
@@ -80,7 +80,7 @@ test('Test #4 - Save encryped password', async () => {
 test('Test #5 - Insert duplicated users', () => {
   return request(app).post(MAIN_ROUTE)
     .send({
-      company_id: '1', name: 'João Rodrigues', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     })
     .set('authorization', `bearer ${user.token}`)
     .then((res) => {
@@ -93,7 +93,7 @@ test('Test #6 - Update user', () => {
   const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      company_id: '1', name: 'João Rodrigues - Update', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues - Update', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     }, ['id'])
     .then((usr) => request(app).put(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`)
@@ -108,7 +108,7 @@ test('Test #7 - Delete user', () => {
   const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      company_id: '1', name: 'João Rodrigues - Remove', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'João Rodrigues - Remove', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     }, ['id'])
     .then((usr) => request(app).delete(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`))
@@ -122,7 +122,7 @@ test.skip('Test #8 - Restrict the access from another user', () => {
   const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
-      company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '1',
+      company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     }, ['id'])
     .then((usr) => request(app).get(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`))
