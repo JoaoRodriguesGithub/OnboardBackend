@@ -16,7 +16,7 @@ test('Test #1 - Create user with signup', () => {
     });
 });
 
-test.skip('Test #2 - Recieve token when authenticating ', () => {
+test('Test #2 - Recieve token when authenticating ', () => {
   const email = `${Date.now()}@onboard.com`;
   return app.services.user.save(
     {
@@ -30,7 +30,7 @@ test.skip('Test #2 - Recieve token when authenticating ', () => {
     });
 });
 
-test.skip('Test #3 - Wrong authentication attempt with wrong password', () => {
+test('Test #3 - Wrong authentication attempt with wrong password', () => {
   const email = `${Date.now()}@onboard.com`;
   return app.services.user.save(
     {
@@ -44,7 +44,7 @@ test.skip('Test #3 - Wrong authentication attempt with wrong password', () => {
     });
 });
 
-test.skip('Test #4 - Wrong authentication attempt with wrong user', () => {
+test('Test #4 - Wrong authentication attempt with wrong user', () => {
   return request(app).post('/auth/signin')
     .send({ email: 'doesnotexist@mail.com', password: '654321' })
     .then((res) => {
@@ -53,12 +53,13 @@ test.skip('Test #4 - Wrong authentication attempt with wrong user', () => {
     });
 });
 
-test.skip('Test #5 - Access to protected routes', () => {
+test('Test #5 - Access to protected routes', () => {
   return request(app).get('/v1/users')
     .then((res) => {
       expect(res.status).toBe(401);
     });
 });
+// TODO service.user.save falta a condição de verificao na tabela para a role
 test.skip('Test #6 - Only have one admin per company', () => {
   const email = `${Date.now()}@onboard.com`;
   return request(app).post('/auth/signup')
