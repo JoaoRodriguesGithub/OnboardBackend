@@ -22,9 +22,9 @@ test('Test #1 - List only user transactions', () => {
     });
 });
 
-test.skip('Test #2 - Insert user transactions', () => {
+test('Test #2 - Insert user transactions', () => {
   return request(app).post(MAIN_ROUTE)
-    .set('authorization', `bearer ${user.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .send({
       user_id: user.id, date: new Date(), category_id: '1', amount: 60,
     })

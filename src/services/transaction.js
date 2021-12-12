@@ -3,5 +3,10 @@ module.exports = (app) => {
     return app.db('transactions').where(filter).select();
   };
 
-  return { find };
+  const save = (transaction) => {
+    return app.db('transactions')
+      .insert(transaction, '*');
+  };
+
+  return { find, save };
 };
