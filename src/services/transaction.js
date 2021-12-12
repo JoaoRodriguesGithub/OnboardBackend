@@ -5,6 +5,10 @@ module.exports = (app) => {
     return app.db('transactions').where(filter).select();
   };
 
+  const findOne = (filter = {}) => {
+    return app.db('transactions').where(filter).first();
+  };
+
   const save = (transaction) => {
     if (!transaction.date) throw new ValidationError('DATE is a mandatory attribute');
     if (!transaction.category_id) throw new ValidationError('CATEGORY is a mandatory attribute');
@@ -14,5 +18,5 @@ module.exports = (app) => {
       .insert(transaction, '*');
   };
 
-  return { find, save };
+  return { find, findOne, save };
 };
