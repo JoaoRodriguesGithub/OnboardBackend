@@ -7,6 +7,7 @@ const secret = 'onBoardIsCool!';
 const user = { id: 10000, name: 'admin1', email: 'abc@onboard.com' };
 const user2 = { id: 10002, name: 'admin1', email: 'axpto@xpto.com' };
 const TOKEN = jwt.encode(user, secret);
+const TOKEN2 = jwt.encode(user2, secret);
 
 beforeAll(async () => {
   await app.db.seed.run();
@@ -38,20 +39,20 @@ test('Test #2 - Insert user transactions', () => {
 describe('Test #3 - Validation of transaction creation', () => {
   const testTemplate = (newData, errorMessage) => {
     return request(app).post(MAIN_ROUTE)
-      .set('authorization', `bearer ${user.token}`)
+      .set('authorization', `bearer ${TOKEN2}`)
       .send({
-        user_id: user.id, date: new Date(), category_id: '1', amount: 60, ...newData,
+        user_id: 10002, date: new Date(), category_id: '1', amount: 60, ...newData,
       })
       .then((res) => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe(errorMessage);
       });
   };
-  test.skip('Test #3.1 - Insert transaction without Date', () => testTemplate({ date: null }, 'DATE is a mandatory attribute'));
+  test('Test #3.1 - Insert transaction without Date', () => testTemplate({ date: null }, 'DATE is a mandatory attribute'));
 
-  test.skip('Test #3.2 - Insert transaction without Category', () => testTemplate({ category_id: null }, 'CATEGORY is a mandatory attribute'));
+  test('Test #3.2 - Insert transaction without Category', () => testTemplate({ category_id: null }, 'CATEGORY is a mandatory attribute'));
 
-  test.skip('Test #3.3 - Insert transaction without Amount', () => testTemplate({ amount: null }, 'AMOUNT is a mandatory attribute'));
+  test('Test #3.3 - Insert transaction without Amount', () => testTemplate({ amount: null }, 'AMOUNT is a mandatory attribute'));
 });
 
 test.skip('Test #4 - List user transactions by transaction id', () => {
