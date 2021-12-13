@@ -55,12 +55,12 @@ describe('Test #3 - Validation of transaction creation', () => {
   test('Test #3.3 - Insert transaction without Amount', () => testTemplate({ amount: null }, 'AMOUNT is a mandatory attribute'));
 });
 
-test.skip('Test #4 - List user transactions by transaction id', () => {
+test('Test #4 - List user transactions by transaction id', () => {
   return app.db('transactions').insert({
-    user_id: user.id, date: new Date(), category_id: '1', amount: 60,
+    user_id: 10000, date: new Date(), category_id: '1', amount: 60,
   }, ['id'])
     .then((result) => request(app).get(`${MAIN_ROUTE}/${result[0].id}`)
-      .set('authorization', `bearer ${user.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .then((res) => {
         expect(res.status).toBe(200);
         expect(res.body.id).toBe(result[0].id);
