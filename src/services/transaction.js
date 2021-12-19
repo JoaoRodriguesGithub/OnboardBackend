@@ -14,8 +14,13 @@ module.exports = (app) => {
     if (!transaction.category_id) throw new ValidationError('CATEGORY is a mandatory attribute');
     if (!transaction.amount) throw new ValidationError('AMOUNT is a mandatory attribute');
 
+    const newTransaction = { ...transaction };
+    if (transaction.amount < 0) {
+      newTransaction.amount *= -1;
+    }
+
     return app.db('transactions')
-      .insert(transaction, '*');
+      .insert(newTransaction, '*');
   };
 
   const update = (id, transaction) => {

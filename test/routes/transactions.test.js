@@ -105,9 +105,9 @@ test('Test #7 - Delete transaction from another user', () => {
       }));
 });
 
-test.skip('Test #8 - Transaction ammount must be positive', () => {
+test('Test #8 - Transaction ammount must be positive', () => {
   return request(app).post(MAIN_ROUTE)
-    .set('authorization', `bearer ${user.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .send({
       user_id: user.id, date: new Date(), category_id: '1', amount: -60,
     })
