@@ -93,15 +93,15 @@ test('Test #6 - Remove transaction ', () => {
       }));
 });
 
-test.skip('Test #7 - Access transaction from another user', () => {
+test('Test #7 - Delete transaction from another user', () => {
   return app.db('transactions').insert({
     user_id: user2.id, date: new Date(), category_id: '1', amount: 60,
   }, ['id'])
     .then((result) => request(app).delete(`${MAIN_ROUTE}/${result[0].id}`)
-      .set('authorization', `bearer ${user.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .then((res) => {
         expect(res.status).toBe(403);
-        expect(res.body.error).toBe('This resource does not belong to this user');
+        expect(res.body.error).toBe('Access denied');
       }));
 });
 
