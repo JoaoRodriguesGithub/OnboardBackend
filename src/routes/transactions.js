@@ -1,7 +1,16 @@
 const express = require('express');
+const ForbiddenError = require('../errors/forbiddenError');
 
 module.exports = (app) => {
   const router = express.Router();
+
+  router.param('id', (req, res, next) => {
+    app.services.transaction.findOne({ id: req.params.id })
+      .then((result) => {
+        if (result.user_id !== req.user.id) throw new ForbiddenError();
+        next();
+      }).catch((err) => next(err));
+  });
 
   router.get('/', (req, res, next) => {
     app.services.transaction.find({ user_id: req.user.id })
