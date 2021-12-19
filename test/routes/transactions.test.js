@@ -68,12 +68,12 @@ test('Test #4 - List user transactions by transaction id', () => {
       }));
 });
 
-test.skip('Test #5 - Update transaction', () => {
+test('Test #5 - Update transaction', () => {
   return app.db('transactions').insert({
     user_id: user.id, date: new Date(), category_id: '1', amount: 60,
   }, ['id'])
     .then((result) => request(app).put(`${MAIN_ROUTE}/${result[0].id}`)
-      .set('authorization', `bearer ${user.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .send({ amount: '100.00' })
       .then((res) => {
         expect(res.status).toBe(200);
