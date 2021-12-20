@@ -7,6 +7,7 @@ const email = `${Date.now()}@tester.com`;
 
 let user;
 let user2;
+const TOKEN3 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAwMDMsIm5hbWUiOiJjb21lcmNpYWwxIiwiZW1haWwiOiJjeHB0b0B4cHRvLmNvbSJ9.58xz5xufiF6nTt-r5NPJi1Wt5LZLClo9XVN-2sfrmHg';
 
 beforeAll(async () => {
   const res = await app.services.user.save({
@@ -18,7 +19,7 @@ beforeAll(async () => {
     company_id: '1', name: 'User Account tester2', email: `${Date.now()}@tester.com`, password: '123456', role_id: '2',
   });
   user2 = { ...res2[0] };
-  user2.token = jwt.encode(user, 'onBoardIsCool!');
+  user2.token = jwt.encode(user2, 'onBoardIsCool!');
 });
 
 test('Test #1 - List all users', () => {
@@ -90,14 +91,9 @@ test('Test #5 - Insert duplicated users', () => {
 });
 
 test('Test #6 - Update user', () => {
-  const email2 = `${Date.now()}@tester.com`;
-  return app.db('users')
-    .insert({
-      company_id: '1', name: 'João Rodrigues - Update', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
-    }, ['id'])
-    .then((usr) => request(app).put(`${MAIN_ROUTE}/${usr[0].id}`)
-      .set('authorization', `bearer ${user.token}`)
-      .send({ name: 'User updated' }))
+  return request(app).put(`${MAIN_ROUTE}/10003`)
+    .set('authorization', `bearer ${TOKEN3}`)
+    .send({ name: 'User updated' })
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('User updated');
@@ -105,52 +101,52 @@ test('Test #6 - Update user', () => {
 });
 
 test('Test #7 - Delete user', () => {
-  const email2 = `${Date.now()}@tester.com`;
-  return app.db('users')
-    .insert({
-      company_id: '1', name: 'João Rodrigues - Remove', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
-    }, ['id'])
-    .then((usr) => request(app).delete(`${MAIN_ROUTE}/${usr[0].id}`)
-      .set('authorization', `bearer ${user.token}`))
+  return request(app).delete(`${MAIN_ROUTE}/10003`)
+    .set('authorization', `bearer ${TOKEN3}`)
     .then((res) => {
       expect(res.status).toBe(204);
     });
 });
 
-// TODO Aqui devemos esperar uma resposta 401 ou 403?
-test.skip('Test #8 - Restrict the access from another user', () => {
+test('Test #8 - Restrict the access from another user', () => {
   const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
     .insert({
       company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     }, ['id'])
     .then((usr) => request(app).get(`${MAIN_ROUTE}/${usr[0].id}`)
-      .set('authorization', `bearer ${user.token}`))
+      .set('authorization', `bearer ${user2.token}`))
     .then((res) => {
-      expect(res.status).toBe(401);
-      expect(res.body.error).toBe('Does not have access to the requested resource');
+      expect(res.status).toBe(403);
+      expect(res.body.error).toBe('Access denied');
     });
 });
 
-test.skip('Test #9 - Restrict edition of another user', () => {
+test('Test #9 - Restrict edition of another user', () => {
+  const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
-    .insert({ id: user2.id, name: 'Tiago Rodrigues #User2' }, ['id'])
+    .insert({
+      company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
+    }, ['id'])
     .then((usr) => request(app).put(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`))
     .then((res) => {
       expect(res.status).toBe(403);
-      expect(res.body.error).toBe('Does not have access to the requested resource');
+      expect(res.body.error).toBe('Access denied');
     });
 });
 
-test.skip('Test #10 - Restrict deletion of another user', () => {
+test('Test #10 - Restrict deletion of another user', () => {
+  const email2 = `${Date.now()}@tester.com`;
   return app.db('users')
-    .insert({ id: user2.id, name: 'Tiago Rodrigues #User2' }, ['id'])
+    .insert({
+      company_id: '1', name: 'Tiago Rodrigues - #User2', email: email2, password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
+    }, ['id'])
     .then((usr) => request(app).delete(`${MAIN_ROUTE}/${usr[0].id}`)
       .set('authorization', `bearer ${user.token}`))
     .then((res) => {
       expect(res.status).toBe(403);
-      expect(res.body.error).toBe('Does not have access to the requested resource');
+      expect(res.body.error).toBe('Access denied');
     });
 });
 
