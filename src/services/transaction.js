@@ -11,6 +11,9 @@ module.exports = (app) => {
 
   const save = (transaction) => {
     if (!transaction.date) throw new ValidationError('DATE is a mandatory attribute');
+    if (Date.parse(transaction.date) > Date.now()) {
+      throw new ValidationError('DATE future not authorized');
+    }
     if (!transaction.category_id) throw new ValidationError('CATEGORY is a mandatory attribute');
     if (!transaction.amount) throw new ValidationError('AMOUNT is a mandatory attribute');
 
