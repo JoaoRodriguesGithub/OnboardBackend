@@ -1,5 +1,6 @@
 const request = require('supertest');
 const jwt = require('jwt-simple');
+const moment = require('moment');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/transactions';
@@ -115,5 +116,16 @@ test('Test #8 - Transaction ammount must be positive', () => {
       expect(res.status).toBe(201);
       expect(res.body.user_id).toBe(user.id);
       expect(res.body.amount).toBe('60.00');
+    });
+});
+test('Test #9 - Future transaction must be unauthorized', () => {
+  return request(app).post(MAIN_ROUTE)
+    .set('authorization', `bearer ${TOKEN}`)
+    .send({
+      user_id: user.id, date: moment().add({ days: 5 }), category_id: '1', amount: 5,
+    })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('DATE future not authorized');
     });
 });
