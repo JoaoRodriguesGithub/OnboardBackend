@@ -1,9 +1,14 @@
 const bcrypt = require('bcrypt-nodejs');
+const ForbiddenError = require('../errors/forbiddenError');
 const ValidationError = require('../errors/validationError');
 
 module.exports = (app) => {
-  const findAll = () => {
-    return app.db('users').select(['id', 'company_id', 'name', 'email', 'role_id']);
+  const findAll = (user) => {
+    if (user.role_id === 2) throw new ForbiddenError();
+    return app.db('users as u')
+      .join('companies as c', 'c.id', '=', 'u.company_id')
+      .where('company_id', '=', user.company_id)
+      .select(['company_id', 'name', 'email', 'role_id']);
   };
 
   const findOne = (filter = {}) => {

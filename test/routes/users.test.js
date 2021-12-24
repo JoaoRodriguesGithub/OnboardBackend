@@ -11,7 +11,7 @@ const TOKEN3 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAwMDMsIm5hbWUiOiJ
 
 beforeAll(async () => {
   const res = await app.services.user.save({
-    company_id: '1', name: 'User Account tester', email: `${Date.now()}@tester.com`, password: '123456', role_id: '2',
+    company_id: '1', name: 'User Account tester', email: `${Date.now()}@tester.com`, password: '123456', role_id: '1',
   });
   user = { ...res[0] };
   user.token = jwt.encode(user, 'onBoardIsCool!');

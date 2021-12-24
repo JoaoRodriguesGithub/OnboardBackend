@@ -14,7 +14,7 @@ module.exports = (app) => {
   });
 
   router.get('/', (req, res, next) => {
-    app.services.user.findAll()
+    app.services.user.findAll(req.user)
       .then((result) => res.status(200).json(result))
       .catch((err) => next(err));
   });
