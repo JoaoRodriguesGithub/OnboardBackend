@@ -32,6 +32,11 @@ module.exports = (app) => {
       return next(err);
     }
   });
+  router.get('/signup', (req, res, next) => {
+    app.services.auth.findAll()
+      .then((result) => res.status(200).json(result))
+      .catch((err) => next(err));
+  });
 
   return router;
 };

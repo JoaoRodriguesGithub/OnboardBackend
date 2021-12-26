@@ -73,3 +73,11 @@ test.skip('Test #6 - Only have one admin per company', () => {
       expect(res.body.error).toBe('Already exists an admin for this company');
     });
 });
+
+test('Test #7 - List all Companies', () => {
+  return request(app).get('/auth/signup')
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBeGreaterThan(0);
+    });
+});
