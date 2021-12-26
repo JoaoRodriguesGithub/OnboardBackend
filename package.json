@@ -10,7 +10,7 @@
     "start": "node src/server.js",
     "test": "jest",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watchAll --verbose=false"
+    "secure-mode": "jest --watchAll --verbose=true"
   },
   "repository": {
     "type": "git",
