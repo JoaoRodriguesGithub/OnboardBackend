@@ -1,6 +1,11 @@
 const ValidationError = require('../errors/validationError');
 
 module.exports = (app) => {
+  const findAll = () => {
+    return app.db('categories')
+      .select('categoryName');
+  };
+
   const find = (filter = {}) => {
     return app.db('transactions').where(filter).select();
   };
@@ -38,6 +43,6 @@ module.exports = (app) => {
   };
 
   return {
-    find, findOne, save, update, remove,
+    find, findOne, save, update, remove, findAll,
   };
 };
