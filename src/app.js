@@ -2,6 +2,7 @@ const app = require('express')();
 const consign = require('consign');
 
 const knex = require('knex');
+const cors = require('cors');
 const knexfile = require('../knexfile');
 
 app.db = knex(knexfile.test);
@@ -28,5 +29,11 @@ app.use((err, req, res, next) => {
   }
   next(err);
 });
+
+app.use(
+  cors({
+    origin: '*',
+  }),
+);
 
 module.exports = app;
