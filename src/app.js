@@ -1,17 +1,12 @@
 const app = require('express')();
 const consign = require('consign');
-
-const knex = require('knex');
 const cors = require('cors');
+const knex = require('knex');
 const knexfile = require('../knexfile');
 
 app.db = knex(knexfile.test);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors());
 
 consign({ cwd: 'src', verbose: false })
   .include('./config/passport.js')
@@ -20,10 +15,6 @@ consign({ cwd: 'src', verbose: false })
   .then('./routes')
   .then('./config/router.js')
   .into(app);
-
-app.use(
-  cors({ }),
-);
 
 app.get('/', (req, res) => {
   res.status(200).send();

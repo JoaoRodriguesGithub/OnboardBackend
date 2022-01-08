@@ -22,6 +22,7 @@ beforeAll(async () => {
   user2.token = jwt.encode(user2, 'onBoardIsCool!');
 });
 
+// TODO falta corrigir o erro 500
 test('Test #1 - List all users', () => {
   return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`)
