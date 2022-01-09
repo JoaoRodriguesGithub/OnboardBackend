@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const findAll = () => {
     return app.db('companies')
-      .select(['companyName']);
+      .select(['id', 'companyName']);
   };
   return { findAll };
 };
