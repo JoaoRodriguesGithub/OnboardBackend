@@ -133,7 +133,6 @@ test('Test #10 - List all Categories', () => {
   return request(app).get(`${MAIN_ROUTE}/categories`)
     .set('authorization', `bearer ${TOKEN}`)
     .then((res) => {
-      console.log(res.body);
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
     });
