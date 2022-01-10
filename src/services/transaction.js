@@ -3,14 +3,14 @@ const ValidationError = require('../errors/validationError');
 module.exports = (app) => {
   const findAll = () => {
     return app.db('categories')
-      .select('categoryName');
+      .select('id', 'categoryName');
   };
 
   const find = (filter = {}) => {
     return app.db('transactions')
       .join('categories', 'transactions.category_id', 'categories.id')
       .where(filter)
-      .select('transactions.id', 'transactions.user_id', 'transactions.date', 'transactions.amount', 'categories.categoryName');
+      .select('transactions.id', 'transactions.user_id', 'transactions.date', 'transactions.amount', 'transactions.category_id', 'categories.categoryName');
   };
 
   const findOne = (filter = {}) => {
