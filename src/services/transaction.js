@@ -7,7 +7,10 @@ module.exports = (app) => {
   };
 
   const find = (filter = {}) => {
-    return app.db('transactions').where(filter).select();
+    return app.db('transactions')
+      .join('categories', 'transactions.category_id', 'categories.id')
+      .where(filter)
+      .select('transactions.id', 'transactions.user_id', 'transactions.date', 'transactions.amount', 'categories.categoryName');
   };
 
   const findOne = (filter = {}) => {
