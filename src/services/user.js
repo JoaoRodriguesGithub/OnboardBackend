@@ -7,7 +7,7 @@ module.exports = (app) => {
     if (user.role_id === 2) throw new ForbiddenError();
     return app.db('users')
       .where('users.company_id', user.company_id)
-      .select('users.company_id', 'users.name', 'users.email', 'users.role_id');
+      .select('users.name', 'users.email', 'users.role_id');
   };
 
   const findOne = (filter = {}) => {
