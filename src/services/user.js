@@ -5,10 +5,9 @@ const ValidationError = require('../errors/validationError');
 module.exports = (app) => {
   const findAll = (user) => {
     if (user.role_id === 2) throw new ForbiddenError();
-    return app.db('users as u')
-      .join('companies as c', 'c.id', '=', 'u.company_id')
-      .where('company_id', '=', user.company_id)
-      .select(['company_id', 'name', 'email', 'role_id']);
+    return app.db('users')
+      .where('users.company_id', user.company_id)
+      .select('users.company_id', 'users.name', 'users.email', 'users.role_id');
   };
 
   const findOne = (filter = {}) => {
