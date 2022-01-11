@@ -17,6 +17,8 @@ module.exports = (app) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            company_id: user.company_id,
+            role_id: user.role_id,
           };
           const token = jwt.encode(payload, secret);
           res.status(200).json({ token });
