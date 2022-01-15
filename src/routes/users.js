@@ -22,8 +22,6 @@ module.exports = (app) => {
   router.post('/', async (req, res, next) => {
     try {
       app.services.user.findAll(req.user);
-      if (req.user.role_id === 2) throw new ForbiddenError();
-      else next();
       const result = await app.services.user.save(req.body);
       return res.status(201).json(result[0]);
     } catch (err) {

@@ -150,29 +150,19 @@ test('Test #10 - Restrict deletion of another user', () => {
     });
 });
 
-test.skip('Test #11 - Insert an user with the right role_id permitions', () => {
-  request(app).post(MAIN_ROUTE)
-    .insert({ name: 'Jorge Rodrigues #Role 1', role_id: '1' })
-    .set('authorization', `bearer ${user.token}`)
-    .then((res) => {
-      expect(res.status).toBe(201);
-      expect(res.body[0].role_id).toBe('1');
-    });
-});
-
-test.skip('Test #12 - Insert an user without the role permitions', () => {
+test('Test #11 - Insert an user without the role permitions', () => {
   return request(app).post(MAIN_ROUTE)
     .send({
       company_id: '1', name: 'João Rodrigues #Insert', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
     })
-    .set('authorization', `bearer ${user.token}`)
+    .set('authorization', `bearer ${user2.token}`)
     .then((res) => {
       expect(res.status).toBe(403);
-      expect(res.body.error).toBe('This user does not have permition');
+      expect(res.body.error).toBe('Access denied');
     });
 });
 
-test.skip('Test #13 - Restrict delete permitions for roles', () => {
+test.skip('Test #12 - Restrict delete permitions for roles', () => {
   return app.db('users')
     .insert({
       company_id: '1', name: 'João Rodrigues #Insert', email: 'joaorodrigues@onboard.com', password: '$2a$10$ieGCSPJoXUdecZwrrwdRbua7an/AizIC1qBREyOHuPSXTZNk1atti', role_id: '2',
