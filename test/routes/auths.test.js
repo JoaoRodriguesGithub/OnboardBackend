@@ -59,22 +59,8 @@ test('Test #5 - Access to protected routes', () => {
       expect(res.status).toBe(401);
     });
 });
-// TODO service.user.save falta a condição de verificao na tabela para a role
-test.skip('Test #6 - Only have one admin per company', () => {
-  const email = `${Date.now()}@onboard.com`;
-  return request(app).post('/auth/signup')
-    .send(
-      {
-        company_id: '1', name: 'Jorge Rodrigues', email, password: '123456', role_id: '1',
-      },
-    )
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('Already exists an admin for this company');
-    });
-});
 
-test('Test #7 - List all Companies', () => {
+test('Test #6 - List all Companies', () => {
   return request(app).get('/auth/signup')
     .then((res) => {
       expect(res.status).toBe(200);
