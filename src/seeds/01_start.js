@@ -32,6 +32,9 @@ exports.seed = (knex) => {
       {
         id: 10003, company_id: 2, name: 'comerial1', email: 'cxpto@xpto.com', password: '$2a$10$yxwimTfwl.yRJpGNgsaWP.5q0kYGMG9Id9v/FgkcQ4tAXheuNOLvW', role_id: 2,
       },
+      {
+        id: 10004, company_id: 2, name: 'comerial2', email: 'cxpto2@xpto.com', password: '$2a$10$yxwimTfwl.yRJpGNgsaWP.5q0kYGMG9Id9v/FgkcQ4tAXheuNOLvW', role_id: 2,
+      },
     ]))
     .then(() => knex('transactions').del().insert([
       {
