@@ -4,7 +4,7 @@ const cors = require('cors');
 const knex = require('knex');
 const knexfile = require('../knexfile');
 
-if (process.env.PRODUCTION === true) {
+if (process.env.PRODUCTION === 'true') {
   app.db = knex(knexfile.production);
 } else {
   app.db = knex(knexfile.test);
